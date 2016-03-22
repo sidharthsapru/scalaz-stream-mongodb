@@ -57,10 +57,10 @@ case class ChannelResult[R, A](channel: Channel[Task, R, Process[Task, A]]) {
   def causedBy[B >: A](e: Throwable): ChannelResult[R, B] = modify(_.causedBy(Cause.Error(e)))
 
   /** applies [[scalaz.stream.Process.fallback]] on resulting stream **/
- // def fallback: ChannelResult[R, A] = modify(_.fallback)
+//  def fallback: ChannelResult[R, A] = modify(_.fallback)
 
   /** applies [[scalaz.stream.Process.orElse]] on resulting stream **/
-  //def orElse[B >: A](fallback: => Process[Task, B], cleanup: => Process[Task, B] = halt): ChannelResult[R, B] = modify(receive1Or(p2)(p1))
+//  def orElse[B >: A](fallback: => Process[Task, B], cleanup: => Process[Task, B] = halt): ChannelResult[R, B] = modify(_.orElse(fallback, cleanup))
 
   /** applies [[scalaz.stream.Process.onFailure]] on resulting stream **/
   def onFailure[B >: A](p2: Throwable => Process[Task, B]): ChannelResult[R, B] = modify(_.onFailure(p2))
