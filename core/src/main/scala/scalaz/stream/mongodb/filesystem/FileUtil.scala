@@ -3,11 +3,12 @@ package scalaz.stream.mongodb.filesystem
 import scalaz.stream.mongodb.channel.ChannelResult
 import scalaz.concurrent.Task
 import scalaz.stream.Process
-import scalaz.stream.processes._
+import scalaz.stream.process1._
 import java.io.{FileNotFoundException, InputStream}
 import com.mongodb.gridfs.GridFS
-import scalaz.stream.Process.End
+import scalaz.stream._
 import scalaz.stream.mongodb.util.Bytes
+import scalaz.stream.io._
 
 
 object FileUtil extends FileUtil
@@ -20,7 +21,7 @@ trait FileUtil {
 
     (gfs: GridFS) => now {
       (file: MongoFileRead) =>
-        resource[(InputStream, Array[Byte]), Bytes](delay {
+        resource[Task,(InputStream, Array[Byte]), Bytes](delay {
           Option(gfs.findOne(file.id)) match {
             case Some(found) => (found.getInputStream, new Array(buffSize))
             case None => throw new FileNotFoundException()
@@ -33,7 +34,7 @@ trait FileUtil {
             if (read >= 0) {
               new Bytes(buff, read)
             } else {
-              throw End
+               throw Cause.Terminated(Cause.End)
             }
           }
         })

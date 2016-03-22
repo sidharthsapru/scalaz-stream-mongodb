@@ -108,7 +108,7 @@ ${ snippet {
   })
 
   def filesQuery(fsCommand: ListCommand, expected: Seq[MongoFileWrite]) = {
-    FileSystemCommand(fsCommand).verify(got => got.map(_.id) must haveTheSameElementsAs(expected.map(_.id)))
+    FileSystemCommand(fsCommand).verify(got => got.map(_.id) must contain(exactly(expected.map(_.id):_*)))
   }
 
 
@@ -125,9 +125,7 @@ ${ snippet {
         (list named ("beta")) ++
         (list files ("filename" regex "g.*"))
     ).verify(result =>
-      result.map(_.id) must haveTheSameElementsAs(Seq(defaultFiles(0), defaultFiles(1), defaultFiles(2)).map(_.id))
-                      )
-
+      result.map(_.id) must contain(exactly(Seq(defaultFiles(0), defaultFiles(1), defaultFiles(2)).map(_.id):_*)))
   }
 
 

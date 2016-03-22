@@ -5,8 +5,8 @@ import scalaz.stream.mongodb.bson.{BSONValuesImplicits, BSONValues}
 import scalaz.stream.mongodb.index.CollectionIndexSyntax
 import com.mongodb.DBCollection
 import scalaz.concurrent.Task
-import scalaz.stream.Process
 import scalaz.stream.Process._
+import scalaz.stream._
 
 import scala.language.implicitConversions
 import scalaz.stream.mongodb.update.{UpdateSyntax, FindAndModifySyntax}

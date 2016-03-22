@@ -12,7 +12,7 @@ import GitKeys._
 
 object build extends Build {
 
-  lazy val specs2Version = "2.2.3"
+  lazy val specs2Version = "2.4.15"
 
   lazy val resolverSettings =
     resolvers ++= Seq(
@@ -37,7 +37,7 @@ object build extends Build {
   lazy val libraries = Seq(
     libraryDependencies ++= Seq(
       "org.mongodb" % "mongo-java-driver" % "2.11.3"
-      , "org.scalaz.stream" %% "scalaz-stream" % "0.1" exclude("org.scala-lang", "*")
+      , "org.scalaz.stream" %% "scalaz-stream" % "0.7.1a" exclude("org.scala-lang", "*")
     )
   )
 
@@ -46,7 +46,7 @@ object build extends Build {
       "org.scalacheck" %% "scalacheck" % "1.10.1" % "test" exclude("org.scala-lang", "*")
       , "org.specs2" %% "specs2" % specs2Version % "test" exclude("org.scalaz", "*")
       , "org.pegdown" % "pegdown" % "1.2.1" % "test"
-      , "junit" % "junit" % "4.7" % "test"
+      , "junit" % "junit" % "4.11" % "test"
     )
 
 
@@ -107,8 +107,8 @@ object build extends Build {
       Seq(
         organization := "com.spinoco"
         , version := "0.3.0-SNAPSHOT"
-        , scalaVersion := "2.10.2"
-        , conflictManager := ConflictManager.strict
+        , scalaVersion := "2.10.4"
+        , conflictManager := ConflictManager.default
         , shellPrompt := ShellPrompt.buildShellPrompt
         , testOptions in Test += Tests.Argument("html", "console", "junitxml")
         , concurrentRestrictions in Global += Tags.limit(Tags.Test, java.lang.Runtime.getRuntime.availableProcessors() / 2 min 1 max 4) //restrict tests to max 4 threads

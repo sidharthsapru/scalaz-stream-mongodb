@@ -42,7 +42,6 @@ class BSONSpec extends Specification with ScalaCheck with Snippets {
        Special values:
 
        BSON Specification allows for null              :  ${ snippet { BSONObject("nullField" -> BSONNull) } }   $nullValue
-       Options are added to object only when nonEmpty :  ${ snippet { BSONObject("one" -> Some(1)) } }                      $optionValue
 
 
        To get a value from DBObject You can use syntactic sugar
@@ -146,7 +145,7 @@ class BSONSpec extends Specification with ScalaCheck with Snippets {
       build must_== dbo
   }
 
-  implicit lazy val oidGen = Arbitrary(Gen[ObjectId] { p => Some(new ObjectId(p.rng.nextInt(), p.rng.nextInt(), p.rng.nextInt())) })
+  implicit lazy val oidGen = Arbitrary(Gen.const(new ObjectId()))
 
 
   def retrieve = new {

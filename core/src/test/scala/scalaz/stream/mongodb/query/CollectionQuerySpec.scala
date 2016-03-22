@@ -230,7 +230,7 @@ ${ snippet { query("key1" -> "value") comment ("Long duration query") }}
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-  implicit lazy val oidGen = Gen[ObjectId] { p => Some(new ObjectId(p.rng.nextInt(), p.rng.nextInt(), p.rng.nextInt())) }
+  implicit lazy val oidGen = Gen.const(new ObjectId())
 
   val listOfObjectGen = for {
     a1 <- Arbitrary.arbInt.arbitrary

@@ -97,22 +97,22 @@ how the results will be stored. By default results override any results found in
 
     def inline = MapReduce(query() mapReduce mrCommand).verify {
       (result, coll) =>
-        (result must haveTheSameElementsAs(expectedResult))
+        (result must contain(exactly(expectedResult:_*)))
     }
     
     
     def resultCollection = MapReduce(query() mapReduce (mrCommand persist("results"))).verify {
       (result, coll) =>
-        (result must haveTheSameElementsAs(expectedResult)) and    
-          (coll.getDB.getCollection("results").find().iterator().asScala.toSeq must haveTheSameElementsAs(expectedResult))
+        (result must contain(exactly(expectedResult:_*)) and
+          (coll.getDB.getCollection("results").find().iterator().asScala.toSeq must contain(exactly(expectedResult:_*))))
     }
     
     val resultsDbName = new ObjectId().toString
 
     def resultCollection2 = MapReduce(query() mapReduce (mrCommand persist(resultsDbName + ".results"))).verify {
       (result, coll) =>
-        (result must haveTheSameElementsAs(expectedResult)) and
-          (coll.getDB.getMongo().getDB(resultsDbName).getCollection("results").find().iterator().asScala.toSeq must haveTheSameElementsAs(expectedResult))
+        (result must contain(exactly(expectedResult:_*))) and
+          (coll.getDB.getMongo().getDB(resultsDbName).getCollection("results").find().iterator().asScala.toSeq must contain(exactly(expectedResult:_*)))
     }
 
 
@@ -122,10 +122,10 @@ how the results will be stored. By default results override any results found in
     
        def basic = MapReduce(query() mapReduce (defalutMapF reduce defaultReduceF finalize "function(k,v) { return (v*2);}")).verify {
            (result, coll) =>
-            result must haveTheSameElementsAs(Seq[DBObject](
+            result must contain(exactly(Seq[DBObject](
               BSONObject("_id" -> "A", "value" -> 6.0d)
               , BSONObject("_id" -> "B", "value" -> 14.0d)
-              , BSONObject("_id" -> "C", "value" -> 22.0d))) 
+              , BSONObject("_id" -> "C", "value" -> 22.0d)):_*))
              
            
          }

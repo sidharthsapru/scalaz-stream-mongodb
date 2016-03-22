@@ -43,7 +43,7 @@ aggregation functions are:
   }
 
   def distinct = AggregationResult[String](query("key2" >= 2).distinct("key")).verify {
-    result => result.toSet must haveTheSameElementsAs(Set("b", "c"))
+    result => result.toSet must_== Set("b", "c")
   }
 
 

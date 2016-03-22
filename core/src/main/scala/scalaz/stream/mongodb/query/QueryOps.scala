@@ -8,7 +8,7 @@ import com.mongodb.{DBCollection, DBObject}
 import scalaz.stream.mongodb.aggregate.{PipelineOperator, MapReduceDefinition}
 import scalaz.concurrent.Task
 import scalaz.stream.Process._
-import scalaz.stream.Process
+import scalaz.stream._
 import scalaz.stream.mongodb.bson.BSONSerializable
 import scala.util.{Failure, Success}
 import collection.JavaConverters._

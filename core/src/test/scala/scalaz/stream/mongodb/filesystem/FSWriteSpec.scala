@@ -9,10 +9,9 @@ import com.mongodb.{DBObject, DB}
 import scalaz.concurrent.Task 
 import com.mongodb.gridfs.GridFS
 import scalaz.stream.Process._
-import scalaz.stream.processes._
-
+import scalaz.stream._
+import scalaz.stream.process1._
 import collection.JavaConverters._
-
 import scala.language.reflectiveCalls
 import java.io.InputStream
 import scalaz.stream.mongodb.util.Bytes

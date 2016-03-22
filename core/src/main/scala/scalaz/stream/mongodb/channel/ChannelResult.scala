@@ -1,6 +1,6 @@
 package scalaz.stream.mongodb.channel
 
-import scalaz.stream.Process
+import scalaz.stream._
 import scalaz.stream.Process._
 import scalaz.concurrent.Task
 import scalaz._ 
@@ -51,28 +51,28 @@ case class ChannelResult[R, A](channel: Channel[Task, R, Process[Task, A]]) {
   def kill: ChannelResult[R, Nothing] = modify(_.kill)
 
   /** applies [[scalaz.stream.Process.killBy]] on resulting stream **/
-  def killBy(e: Throwable): ChannelResult[R, Nothing] = modify(_.killBy(e))
+  def killBy(e: Throwable): ChannelResult[R, Nothing] = modify(_.kill)
 
   /** applies [[scalaz.stream.Process.causedBy]] on resulting stream **/
-  def causedBy[B >: A](e: Throwable): ChannelResult[R, B] = modify(_.causedBy(e))
+  def causedBy[B >: A](e: Throwable): ChannelResult[R, B] = modify(_.causedBy(Cause.Error(e)))
 
   /** applies [[scalaz.stream.Process.fallback]] on resulting stream **/
-  def fallback: ChannelResult[R, A] = modify(_.fallback)
+ // def fallback: ChannelResult[R, A] = modify(_.fallback)
 
   /** applies [[scalaz.stream.Process.orElse]] on resulting stream **/
-  def orElse[B >: A](fallback: => Process[Task, B], cleanup: => Process[Task, B] = halt): ChannelResult[R, B] = modify(_.orElse(fallback, cleanup))
+  //def orElse[B >: A](fallback: => Process[Task, B], cleanup: => Process[Task, B] = halt): ChannelResult[R, B] = modify(receive1Or(p2)(p1))
 
   /** applies [[scalaz.stream.Process.onFailure]] on resulting stream **/
-  def onFailure[B >: A](p2: => Process[Task, B]): ChannelResult[R, B] = modify(_.onFailure(p2))
+  def onFailure[B >: A](p2: Throwable => Process[Task, B]): ChannelResult[R, B] = modify(_.onFailure(p2))
 
   /** applies [[scalaz.stream.Process.onComplete]] on resulting stream **/
   def onComplete[B >: A](p2: => Process[Task, B]): ChannelResult[R, B] = modify(_.onComplete(p2))
 
   /** applies [[scalaz.stream.Process.disconnect]] on resulting stream **/
-  def disconnect: ChannelResult[R, A] = modify(_.disconnect)
+  def disconnect: ChannelResult[R, A] = modify(_.disconnect(Cause.Kill))
 
   /** applies [[scalaz.stream.Process.hardDisconnect]] on resulting stream **/
-  def hardDisconnect: ChannelResult[R, A] = modify(_.hardDisconnect)
+  def hardDisconnect: ChannelResult[R, A] = modify(_.kill)
 
   /** applies [[scalaz.stream.Process.trim]] on resulting stream **/
   def trim: ChannelResult[R, A] = modify(_.trim)

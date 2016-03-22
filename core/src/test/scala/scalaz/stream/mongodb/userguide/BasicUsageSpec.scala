@@ -4,13 +4,13 @@ package scalaz.stream.mongodb.userguide
 import org.specs2.Specification
 import org.specs2.specification.Snippets
 import com.mongodb.{DBCollection, WriteConcern, DBObject}
-import scalaz.stream.processes._
+import scalaz.stream._
 import scalaz.stream.Process
 import scalaz.stream.Process._
 import java.io.File
 import java.util.concurrent.ExecutorService
 import scalaz.concurrent.Task
-
+import scalaz.stream.process1._
 import scalaz.stream.mongodb.collectionSyntax._
 
 class BasicUsageSpec extends Specification with Snippets {

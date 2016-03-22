@@ -8,12 +8,14 @@ import scalaz.stream.Process
 import scalaz.concurrent.Task
 import org.bson.types.ObjectId
 import java.util.Date
-import scalaz.stream.processes._
+import scalaz.stream._
 import scalaz.syntax.monad._
 import java.io.InputStream
 import scalaz.stream.mongodb.filesystem._ 
 import scalaz.stream.mongodb.filesystem.MongoFileRead
 import scalaz.stream.mongodb.util.Bytes
+import scalaz.stream.process1._
+import scalaz.stream.io._
 
 /**
  *

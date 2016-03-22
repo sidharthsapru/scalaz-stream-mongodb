@@ -2,8 +2,8 @@ package scalaz.stream.mongodb.filesystem
 
 import scalaz.stream.mongodb.channel.ChannelResult
 import scalaz.stream.Process
-import scalaz.stream.Process._
-import scalaz.stream.processes._
+import scalaz.stream._
+import scalaz.stream.process1._
 import scalaz.concurrent.Task
 import com.mongodb.gridfs.GridFS
 import scalaz.stream.mongodb.collectionSyntax._

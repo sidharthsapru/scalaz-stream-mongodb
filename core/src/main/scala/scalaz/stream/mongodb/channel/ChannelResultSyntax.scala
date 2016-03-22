@@ -1,7 +1,7 @@
 package scalaz.stream.mongodb.channel
 
 import scalaz.stream.mongodb.MongoCollectionCommand
-import scalaz.stream.Process._
+import scalaz.stream._
 import scalaz.concurrent.Task
 import com.mongodb.DBCollection
 import scalaz.stream.Process

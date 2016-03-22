@@ -151,58 +151,58 @@ Moreover there is a possibility to add whole new fields with their values or ren
   def groupTest = new {
     def sum = Pipeline(query() |>> (group("key" -> "$key") compute ("sumKey" sum "$v1"))).verify {
       (result, c) =>
-        result must haveTheSameElementsAs(Seq[DBObject](
+        result  must contain(exactly(Seq[DBObject](
           BSONObject("_id" -> BSONObject("key" -> "A"), "sumKey" -> 3)
           , BSONObject("_id" -> BSONObject("key" -> "B"), "sumKey" -> 7)
           , BSONObject("_id" -> BSONObject("key" -> "C"), "sumKey" -> 11)
-        ))
+        ):_*))
     }
 
     def avg = Pipeline(query() |>> (group("key" -> "$key") compute ("sumKey" avg "$v1"))).verify {
       (result, c) =>
-        result must haveTheSameElementsAs(Seq[DBObject](
+        result must contain(exactly(Seq[DBObject](
           BSONObject("_id" -> BSONObject("key" -> "A"), "sumKey" -> 1.5d)
           , BSONObject("_id" -> BSONObject("key" -> "B"), "sumKey" -> 3.5d)
           , BSONObject("_id" -> BSONObject("key" -> "C"), "sumKey" -> 5.5d)
-        ))
+        ):_*))
     }
 
     def min = Pipeline(query() |>> (group("key" -> "$key") compute ("sumKey" min "$v1"))).verify {
       (result, c) =>
-        result must haveTheSameElementsAs(Seq[DBObject](
+        result  must contain(exactly(Seq[DBObject](
           BSONObject("_id" -> BSONObject("key" -> "A"), "sumKey" -> 1)
           , BSONObject("_id" -> BSONObject("key" -> "B"), "sumKey" -> 3)
           , BSONObject("_id" -> BSONObject("key" -> "C"), "sumKey" -> 5)
-        ))
+        ):_*))
     }
 
     def max = Pipeline(query() |>> (group("key" -> "$key") compute ("sumKey" max "$v1"))).verify {
       (result, c) =>
-        result must haveTheSameElementsAs(Seq[DBObject](
+        result must contain(exactly(Seq[DBObject](
           BSONObject("_id" -> BSONObject("key" -> "A"), "sumKey" -> 2)
           , BSONObject("_id" -> BSONObject("key" -> "B"), "sumKey" -> 4)
           , BSONObject("_id" -> BSONObject("key" -> "C"), "sumKey" -> 6)
-        ))
+        ):_*))
     }
 
 
     def last = Pipeline(query() |>> (group("key" -> "$key") compute ("sumKey" last "$v1"))).verify {
       (result, c) =>
-        result must haveTheSameElementsAs(Seq[DBObject](
+        result must contain(exactly(Seq[DBObject](
           BSONObject("_id" -> BSONObject("key" -> "A"), "sumKey" -> 2)
           , BSONObject("_id" -> BSONObject("key" -> "B"), "sumKey" -> 4)
           , BSONObject("_id" -> BSONObject("key" -> "C"), "sumKey" -> 6)
-        ))
+        ):_*))
     }
 
 
     def first = Pipeline(query() |>> (group("key" -> "$key") compute ("sumKey" first "$v1"))).verify {
       (result, c) =>
-        result must haveTheSameElementsAs(Seq[DBObject](
+        result must contain(exactly(Seq[DBObject](
           BSONObject("_id" -> BSONObject("key" -> "A"), "sumKey" -> 1)
           , BSONObject("_id" -> BSONObject("key" -> "B"), "sumKey" -> 3)
           , BSONObject("_id" -> BSONObject("key" -> "C"), "sumKey" -> 5)
-        ))
+        ):_*))
     }
 
 
@@ -246,7 +246,7 @@ Moreover there is a possibility to add whole new fields with their values or ren
 
     def simple = Pipeline(query("key" present) |>> (sort("key" Ascending) |>> skip(2) |>> limit(3))).verify {
       (result, c) =>
-        result must haveTheSameElementsAs(documents.sortBy(_.as[String]("key")).drop(2).take(3))
+        result must contain(exactly(documents.sortBy(_.as[String]("key")).drop(2).take(3).toList:_*))
     }
 
   }
@@ -255,7 +255,7 @@ Moreover there is a possibility to add whole new fields with their values or ren
 
     def simple = Pipeline(query() |>> project("key" include, "_id" exclude, "key2" setTo "$v1")).verify {
       (result, c) =>
-        result must haveTheSameElementsAs(documents.map {
+        result must_== (documents.map {
           o =>
             val no = new BasicDBObject()
             no.append("key", o.get("key"))
@@ -271,12 +271,12 @@ Moreover there is a possibility to add whole new fields with their values or ren
 
     def simple = Pipeline(query() |>> ((group("key" -> "$key") compute ("sumKey" addToSet "$v1")) |>> unwind("$sumKey"))).verify {
       (result, c) =>
-        result must haveTheSameElementsAs(documents.map(o => {
+        result.toSet must_== (documents.map(o => {
           val no = new BasicDBObject
           no.append("_id", new BasicDBObject().append("key", o.get("key")))
           no.append("sumKey", o.get("v1"))
           no
-        }))
+        })).toSet
     }
 
   }

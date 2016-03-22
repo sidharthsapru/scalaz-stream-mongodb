@@ -90,7 +90,7 @@ case class StartingMongoInstance(port: Int) extends MongoInstance {
 
   def start(runtime: MongoRuntimeConfig): Throwable \/ RunningMongoInstance = {
     //contains path to binary of mongod
-    fromTryCatch {
+    fromTryCatchNonFatal {
       val mongoBin =
         (runtime.mongodPath orElse Option(System.getenv("SPEC_MONGO_HOME")).map(Paths.get(_)) orElse Option(System.getProperty("SPEC_MONGO_HOME")).map(Paths.get(_)))
         .map(v => v.resolve("bin").resolve("mongod")).filter(Files.exists(_)) getOrElse ({

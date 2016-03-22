@@ -8,21 +8,19 @@ import scalaz._
  * on supported types
  */
 trait BSONValues {
-  
+
+  type OldTag[T] = {type Tag = T}
   /** Essentially and `convertible` scala type must have implicit of BSONValue to be used in queries **/
-  type BSONValue[+A] = @@[A, BSONValueTag]
+  type BSONValue[A] = @@[A, BSONValueTag]
 
   /** Small trick to define `any` value of bson */
-  type BSONAny = Tagged[BSONValueTag]
+  type BSONAny = OldTag[BSONValueTag]
 
   /** BSON currently contains type of `null` this prepresents that type **/
   val BSONNull: BSONValue[Null] = null.asInstanceOf[BSONValue[Null]]
 
-  
-  
   /** Set has own type **/
   type BSONSet = Set[BSONAny]
-  
   /** Constructor to create sets */
   object BSONSet {def apply(a: BSONAny*): BSONSet = Set[BSONAny](a: _*)}
 
@@ -34,9 +32,8 @@ trait BSONValues {
 
   /** Just helper for Seq **/
   type BSONSeq = Seq[BSONAny]
-  
+
   val BSONSeq = BSONList
-  
 
   /** BSONObject is actually a Map **/
   type BSONObject = Map[String, BSONAny]

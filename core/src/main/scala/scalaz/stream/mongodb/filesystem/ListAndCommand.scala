@@ -4,7 +4,7 @@ import scalaz.stream.mongodb.channel.ChannelResult
 import com.mongodb.gridfs.GridFS
 import scalaz.concurrent.Task
 import scalaz.stream.Process
-import scalaz.stream.processes._
+import scalaz.stream.process1._
 
 
 /**

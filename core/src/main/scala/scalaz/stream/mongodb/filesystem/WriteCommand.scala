@@ -4,9 +4,11 @@ import scalaz.concurrent.Task
 import scalaz.stream.Process
 import scalaz.stream.mongodb.channel.ChannelResult
 import com.mongodb.gridfs.GridFS
-import scalaz.stream.processes._
+import scalaz.stream.process1._
 import java.io.OutputStream
 import scalaz.stream.mongodb.util.Bytes
+import scalaz.stream.io._
+
 
 /**
  * write command 
@@ -17,7 +19,7 @@ case class WriteCommand(file: MongoFileWrite) extends GridFsCommand[Bytes=> Task
     Process.eval {
       delay {
         gfs: GridFS => now {
-          resource[OutputStream, Bytes => Task[Unit]](delay {
+          resource[Task,OutputStream, Bytes => Task[Unit]](delay {
             val gfsFile = gfs.createFile()
             gfsFile.setFilename(file.name)
             gfsFile.setId(file.id)

@@ -6,11 +6,11 @@ import com.mongodb.{DBCollection, BasicDBObject, DBObject}
 
 import scalaz.stream.mongodb.collectionSyntax._
 import scalaz.stream.mongodb.MongoCollectionCommand
-import scalaz.stream.Process
-import scalaz.stream.Process._
+import scalaz.stream._
 import scalaz.concurrent.Task
+import scalaz.stream.{Cause, Channel, Process}
+import scalaz.stream.Process._
 import scalaz.stream.mongodb.channel.ChannelResult
-
 
 /**
  * mongodb Query definition
@@ -61,7 +61,7 @@ case class Query(bq: BasicQuery,
                 if (c.hasNext) {
                   c.next
                 } else {
-                  throw End
+                  throw Cause.Terminated(Cause.End)
                 }
               }
             )

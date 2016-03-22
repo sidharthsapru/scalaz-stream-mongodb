@@ -9,7 +9,7 @@ import org.bson.types.ObjectId
 
 import scalaz.stream.mongodb.channel.ChannelResult
 import scalaz.stream.Process
-import scalaz.stream.processes._
+import scalaz.stream.process1._
 import scalaz.concurrent.Task
 
 trait FileSystemSyntax extends FileUtil {
